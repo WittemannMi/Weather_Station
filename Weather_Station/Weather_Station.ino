@@ -134,7 +134,7 @@ float max_wind_value =0;  // to store max wind value
 float temp_value = 0;    // actual tempereate value
 float humidity_value =0; // actual humidity value
 
-//LCD Menu 
+//--LCD Menu 
 
 int row, collum = 0;    // to count the state in the menu matrix
 int MENU [LCD_ROWS][LCD_COLLUMS] = {{00, 01, 02},{10,11,12},{20,21,22},{30,31,32},{40,41,42}};   // 5 rows and 3 collums for this application, set as defines above, defines for the menues maybe in the future
