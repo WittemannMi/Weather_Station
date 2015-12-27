@@ -349,10 +349,7 @@ void showMenu()
     {
     if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
       lcd.setCursor(0,0);             // set the LCD cursor   position  
@@ -365,10 +362,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -381,10 +375,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -397,10 +388,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -414,10 +402,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -431,10 +416,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-     /* lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+     /* clearLCD();
       lcd_menu_change = menu_state;*/
      }
      collum--;
@@ -444,10 +426,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -461,10 +440,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -478,10 +454,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -495,10 +468,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -512,10 +482,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -529,10 +496,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -546,10 +510,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -562,10 +523,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-      lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+      clearLCD();
       lcd_menu_change = menu_state;
      }
      lcd.setCursor(0,0);             // set the LCD cursor   position 
@@ -578,10 +536,7 @@ void showMenu()
     {
      if(menu_state != lcd_menu_change)
      {
-     /* lcd.setCursor(0,0);             // set the LCD cursor   position    
-      lcd.print("                ");
-      lcd.setCursor(0,1);             // set the LCD cursor   position    
-      lcd.print("                ");
+     /* clearLCD();
       lcd_menu_change = menu_state;*/
      }
      collum--;
@@ -592,7 +547,45 @@ void showMenu()
      //Do nothing
     }
   }
-  
+}
+
+void clearLCD()      // Clear the LCD 
+{
+ lcd.setCursor(0,0);             // set the LCD cursor   position    
+ lcd.print("                ");
+ lcd.setCursor(0,1);             // set the LCD cursor   position    
+ lcd.print("                ");
+}
+
+void BTcomm()
+{
+ int state = 0;
+ int flag = 0;        // make sure that you return the state only once
+ 
+ if(Serial.available() > 0)  //if some data is sent, read it and save it in the state variable
+ {
+  state = Serial.read();
+  flag=0;
+ }
+ if (state == '0')  // if the state is 0 the led will turn off
+ {
+  digitalWrite(LCD_BACKLIGHT_PIN, LOW);
+  if(flag == 0)
+  {
+   Serial.println("Backlight: off");
+   flag = 1;
+  }
+ }
+ // if the state is 1 the led will turn on
+ else if (state == '1')
+ {
+  digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
+  if(flag == 0)
+  {
+   Serial.println("Backlight: on");
+   flag = 1;
+  }
+ } 
 }
 /*--------------------------------------------------------------------------------------
   setup()
@@ -636,6 +629,8 @@ void loop()
 
    readButtons();
    showMenu();
+
+   BTcomm();      // Send and receive data via HC06 BT module
 }
 
 // ---->End of Code
