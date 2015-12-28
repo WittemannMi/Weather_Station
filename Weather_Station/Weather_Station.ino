@@ -37,8 +37,8 @@
 Pin description:
 
  --digital Pins--:
- 0: to Tx from BLE
- 1: to Rx from BLE
+ 0: to Tx from BT
+ 1: to Rx from BT
  2: Int0 for Windrad
  3: TEMP_SENS_PIN
  4: LCD-DB4
@@ -48,8 +48,8 @@ Pin description:
  8: LCD-RS 
  9: LCD-Enable
 10: LCD-Backlight
-11: 
-12:
+11: SoftSerial Rx
+12: SoftSerial Tx
 13: 
 
  --analog pins--:
@@ -74,14 +74,16 @@ Pin description:
 --------------------------------------------------------------------------------------*/
 #include <LiquidCrystal.h>
 #include "DHT.h"
+#include <SoftwareSerial.h>
 
 /*--------------------------------------------------------------------------------------
-  Init the LCD library with the LCD pins to be used
+  Init the LCD library with the LCD pins to be used, DHT sesor and serial
 --------------------------------------------------------------------------------------*/
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
-// Initialize DHT sensor.
-DHT dht(3, DHT11); // first parameter is the pin, second is the model
+DHT dht(3, DHT11); // Initialize DHT sensor. first parameter is the pin, second is the model
+
+SoftwareSerial mySerial(11, 12); // Initialize softSerial Pins 11=RX, 12=TX
 
 /*--------------------------------------------------------------------------------------
   Defines
@@ -134,7 +136,7 @@ float max_wind_value =0;  // to store max wind value
 float temp_value = 0;    // actual tempereate value
 float humidity_value =0; // actual humidity value
 
-//--LCD Menu 
+//--LCD Menu--
 
 int row, collum = 0;    // to count the state in the menu matrix
 int MENU [LCD_ROWS][LCD_COLLUMS] = {{00, 01, 02},{10,11,12},{20,21,22},{30,31,32},{40,41,42}};   // 5 rows and 3 collums for this application, set as defines above, defines for the menues maybe in the future
@@ -557,14 +559,14 @@ void clearLCD()      // Clear the LCD
  lcd.print("                ");
 }
 
-void BTcomm()
+void BTcomm()   // test function
 {
  int state = 0;
  int flag = 0;        // make sure that you return the state only once
  
- if(Serial.available() > 0)  //if some data is sent, read it and save it in the state variable
+ if(mySerial.available() > 0)  //if some data is sent, read it and save it in the state variable
  {
-  state = Serial.read();
+  state = mySerial.read();
   flag=0;
  }
  if (state == '0')  // if the state is 0 the led will turn off
@@ -572,7 +574,7 @@ void BTcomm()
   digitalWrite(LCD_BACKLIGHT_PIN, LOW);
   if(flag == 0)
   {
-   Serial.println("Backlight: off");
+   mySerial.println("Backlight: off");
    flag = 1;
   }
  }
@@ -582,7 +584,7 @@ void BTcomm()
   digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
   if(flag == 0)
   {
-   Serial.println("Backlight: on");
+   mySerial.println("Backlight: on");
    flag = 1;
   }
  } 
@@ -604,6 +606,7 @@ void setup() {
    digitalWrite(LCD_BACKLIGHT_PIN,HIGH);
    pinMode(WIND_SENS_PIN, INPUT);
 
+   mySerial.begin(9600);
 }
 
 /*--------------------------------------------------------------------------------------
