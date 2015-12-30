@@ -37,8 +37,8 @@
 Pin description:
 
  --digital Pins--:
- 0: to Tx from BT
- 1: to Rx from BT
+ 0: 
+ 1: 
  2: Int0 for Windrad
  3: TEMP_SENS_PIN
  4: LCD-DB4
@@ -48,8 +48,8 @@ Pin description:
  8: LCD-RS 
  9: LCD-Enable
 10: LCD-Backlight
-11: SoftSerial Rx
-12: SoftSerial Tx
+11: SoftSerial Rx for BT
+12: SoftSerial Tx for BT
 13: 
 
  --analog pins--:
@@ -83,7 +83,7 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 
 DHT dht(3, DHT11); // Initialize DHT sensor. first parameter is the pin, second is the model
 
-SoftwareSerial mySerial(11, 12); // Initialize softSerial Pins 11=RX, 12=TX
+SoftwareSerial mySerial(11, 12); // Initialize SoftSerial Pins 11=RX, 12=TX
 
 /*--------------------------------------------------------------------------------------
   Defines
@@ -115,7 +115,7 @@ SoftwareSerial mySerial(11, 12); // Initialize softSerial Pins 11=RX, 12=TX
 // For Buttons
 int adc_key_in  = 0;
 
-//for Anenometer
+//for Anemometer
 const float windFactor = 2.4; //Factor = 2,4 km/h per RPM
 const int measureTime = 3;
 volatile unsigned int windCounter = 0;
@@ -143,9 +143,12 @@ int MENU [LCD_ROWS][LCD_COLLUMS] = {{00, 01, 02},{10,11,12},{20,21,22},{30,31,32
 int last_lcd_key = 1234;    // initialize to impossible value for the first compare
 unsigned long oldMenutime = 0;   // to "debouce" button presses to not go to the menues to quick 
 unsigned long oldbtnSELECTtime =0;  // to calculate the 3 seconds time to delete the strored values
-boolean firstpress = true;   // to detect the start of a delete attemt
+boolean firstpress = true;   // to detect the start of a delete attempt
 int menu_state;   // the current state of the menu to be displayed 
 
+//--BT Communication
+
+unsigned long oldBTtime = 0; // to check for the 3 seconds timeslot to send BT data
 
 /*--------------------------------------------------------------------------------------
   Functions
@@ -187,9 +190,9 @@ void read_WIND_Speed()            // read Wind counts via GPIO and calculate Win
 {
   PinState = digitalRead(WIND_SENS_PIN);    // read the pushbutton input pin
 
-  if (PinState != lastPinState)     // compare the buttonState to its previous state
+  if (PinState != lastPinState)     // compare the pinState to its previous state
   {
-    if (PinState == HIGH)    // if the current state is HIGH then the button wend from off to on
+    if (PinState == HIGH)    // the it went from low to HIGH
     {
       windCounter++;    // if the state has changed, increment the counter
     }
@@ -201,7 +204,7 @@ void read_WIND_Speed()            // read Wind counts via GPIO and calculate Win
   }
   lastPinState = PinState; // save the current state as the last state,for next time through the loop
 
- int messZeit= 1000 * measureTime;          // Measurement window for the calulation of the Reed contact
+ int messZeit = 1000 * measureTime;          // Measurement window for the calulation of the Reed contact
  if((millis() - alteZeit) >= messZeit)      // only if measurement time is reached calculate a new value
  { 
     windSpeed = (float)windCounter / measureTime * windFactor;
@@ -383,7 +386,7 @@ void showMenu()
      lcd.setCursor(0,0);             // set the LCD cursor   position 
      lcd.print("By M.Wittemann");
      lcd.setCursor(0,1);             // move to the begining of the second line  
-     lcd.print("Rev. 1.1");
+     lcd.print("Rev. 1.2");
      break;
     }
     case 10:
@@ -559,17 +562,19 @@ void clearLCD()      // Clear the LCD
  lcd.print("                ");
 }
 
-void BTcomm()   // test function
+void BTcomm()   // for BT communication
 {
- int state = 0;
+ byte cmd = 0;       // store received data
+ byte param; 
  int flag = 0;        // make sure that you return the state only once
+ unsigned long BTsendTime = 3000 ; 
  
  if(mySerial.available() > 0)  //if some data is sent, read it and save it in the state variable
  {
-  state = mySerial.read();
+  cmd = mySerial.read();
   flag=0;
  }
- if (state == '0')  // if the state is 0 the led will turn off
+ if (cmd == '0')  // if the state is 0 the led will turn off
  {
   digitalWrite(LCD_BACKLIGHT_PIN, LOW);
   if(flag == 0)
@@ -579,7 +584,7 @@ void BTcomm()   // test function
   }
  }
  // if the state is 1 the led will turn on
- else if (state == '1')
+ else if (cmd == '1')
  {
   digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
   if(flag == 0)
@@ -588,6 +593,50 @@ void BTcomm()   // test function
    flag = 1;
   }
  } 
+ else if (cmd == 'e')  // test to erase all values
+ {
+  digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
+  if(flag == 0)
+  {
+   mySerial.println("All Values Deleted...");
+   max_temp =0;
+   min_temp =100;
+   max_humidity = 0;
+   min_humidity = 1000;    
+   max_wind_value =0;
+  }
+ }
+
+ 
+  if((millis() - oldBTtime) > BTsendTime)  // Send out values every 3 seconds
+  {
+   mySerial.print("Windspeed:");
+   mySerial.println(windSpeed);
+   /*
+   mySerial.print("Maximum Windspeed:");
+   mySerial.println(max_wind_value);
+
+   mySerial.print("Temperature:");
+   mySerial.println(temp_value);
+
+   mySerial.print("Maximum Temparature:");
+   mySerial.println(max_temp);   
+
+   mySerial.print("Minimum Temparature:");
+   mySerial.println(min_temp); 
+
+   mySerial.print("Humidity:");
+   mySerial.println(humidity_value);
+
+   mySerial.print("Maximum Humidity:");
+   mySerial.println(max_humidity);   
+
+   mySerial.print("Minimum Humidity:");
+   mySerial.println(min_humidity); 
+   */
+   oldBTtime = millis();
+  }
+ 
 }
 /*--------------------------------------------------------------------------------------
   setup()
