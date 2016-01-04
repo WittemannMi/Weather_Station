@@ -37,8 +37,8 @@
 Pin description:
 
  --digital Pins--:
- 0: 
- 1: 
+ 0: Left open for USB connection to PC
+ 1: Left open for USB connection to PC
  2: Int0 for Windrad
  3: TEMP_SENS_PIN
  4: LCD-DB4
@@ -221,8 +221,7 @@ int read_LCD_buttons()    // read the buttons
     // buttons  are centered at these values: 0, 145, 330, 506, 742
     // add approx 50 to those values and check to see if we are close
     
-    // We make this the 1st option for speed reasons since it will be the most likely result
-    if (adc_key_in > 1000)
+    if (adc_key_in > 1000)   // We make this the 1st option for speed reasons since it will be the most likely result
     {
       return btnNONE; 
     }
@@ -386,7 +385,7 @@ void showMenu()
      lcd.setCursor(0,0);             // set the LCD cursor   position 
      lcd.print("By M.Wittemann");
      lcd.setCursor(0,1);             // move to the begining of the second line  
-     lcd.print("Rev. 1.2");
+     lcd.print("Rev. 1.3");
      break;
     }
     case 10:
@@ -438,7 +437,7 @@ void showMenu()
      lcd.print("Temperature:");
      lcd.setCursor(0,1);             // move to the begining of the second line  
      lcd.print(temp_value); 
-     lcd.print(" *C"); 
+     lcd.print("*C"); 
      break;
     }
     case 21:
@@ -565,7 +564,7 @@ void clearLCD()      // Clear the LCD
 void BTcomm()   // for BT communication
 {
  byte cmd = 0;       // store received data
- byte param; 
+ byte param;         //will be used later
  int flag = 0;        // make sure that you return the state only once
  unsigned long BTsendTime = 3000 ; 
  
@@ -574,24 +573,19 @@ void BTcomm()   // for BT communication
   cmd = mySerial.read();
   flag=0;
  }
- if (cmd == '0')  // if the state is 0 the led will turn off
+ if (cmd == 'w')  // if the state is 0 sened wind speed back
  {
-  digitalWrite(LCD_BACKLIGHT_PIN, LOW);
-  if(flag == 0)
-  {
-   mySerial.println("Backlight: off");
-   flag = 1;
-  }
+  //digitalWrite(LCD_BACKLIGHT_PIN, LOW);
+  mySerial.print("Windspeed:");
+  mySerial.println(windSpeed);
+  mySerial.print("Temperature:");
+  mySerial.println(temp_value);
  }
  // if the state is 1 the led will turn on
- else if (cmd == '1')
+ else if (cmd == 't')
  {
-  digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
-  if(flag == 0)
-  {
-   mySerial.println("Backlight: on");
-   flag = 1;
-  }
+  mySerial.print("Temperature:");
+  mySerial.println(temp_value);
  } 
  else if (cmd == 'e')  // test to erase all values
  {
@@ -607,12 +601,12 @@ void BTcomm()   // for BT communication
   }
  }
 
- 
+ /*
   if((millis() - oldBTtime) > BTsendTime)  // Send out values every 3 seconds
   {
    mySerial.print("Windspeed:");
    mySerial.println(windSpeed);
-   /*
+   
    mySerial.print("Maximum Windspeed:");
    mySerial.println(max_wind_value);
 
@@ -633,9 +627,9 @@ void BTcomm()   // for BT communication
 
    mySerial.print("Minimum Humidity:");
    mySerial.println(min_humidity); 
-   */
+   
    oldBTtime = millis();
-  }
+  }*/
  
 }
 /*--------------------------------------------------------------------------------------
