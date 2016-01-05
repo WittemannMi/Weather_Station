@@ -573,21 +573,27 @@ void BTcomm()   // for BT communication
   cmd = mySerial.read();
   flag=0;
  }
- if (cmd == 'w')  // if the state is 0 sened wind speed back
+ if (cmd == 'v')  // if the command is "v" then send all values
  {
   //digitalWrite(LCD_BACKLIGHT_PIN, LOW);
   mySerial.print("Windspeed:");
   mySerial.println(windSpeed);
+  mySerial.print("Maximum Windspeed:");
+  mySerial.println(max_wind_value);
   mySerial.print("Temperature:");
   mySerial.println(temp_value);
+  mySerial.print("Maximum Temparature:");
+  mySerial.println(max_temp);   
+  mySerial.print("Minimum Temparature:");
+  mySerial.println(min_temp); 
+  mySerial.print("Humidity:");
+  mySerial.println(humidity_value);
+  mySerial.print("Maximum Humidity:");
+  mySerial.println(max_humidity);   
+  mySerial.print("Minimum Humidity:");
+  mySerial.println(min_humidity);
  }
- // if the state is 1 the led will turn on
- else if (cmd == 't')
- {
-  mySerial.print("Temperature:");
-  mySerial.println(temp_value);
- } 
- else if (cmd == 'e')  // test to erase all values
+ else if (cmd == 'e')  // if the command is "e" then erase all values
  {
   digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
   if(flag == 0)
