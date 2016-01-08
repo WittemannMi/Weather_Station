@@ -566,16 +566,16 @@ void BTcomm()   // for BT communication
  byte cmd = 0;       // store received data
  byte param;         //will be used later
  int flag = 0;        // make sure that you return the state only once
- unsigned long BTsendTime = 3000 ; 
+ unsigned long BTsendTime = 100 ; 
  
  if(mySerial.available() > 0)  //if some data is sent, read it and save it in the state variable
  {
   cmd = mySerial.read();
   flag=0;
  }
+ 
  if (cmd == 'v')  // if the command is "v" then send all values
  {
-  //digitalWrite(LCD_BACKLIGHT_PIN, LOW);
   mySerial.print("Windspeed:");
   mySerial.println(windSpeed);
   mySerial.print("Maximum Windspeed:");
@@ -595,16 +595,12 @@ void BTcomm()   // for BT communication
  }
  else if (cmd == 'e')  // if the command is "e" then erase all values
  {
-  digitalWrite(LCD_BACKLIGHT_PIN, HIGH);
-  if(flag == 0)
-  {
    mySerial.println("All Values Deleted...");
    max_temp =0;
    min_temp =100;
    max_humidity = 0;
    min_humidity = 1000;    
    max_wind_value =0;
-  }
  }
 
  /*
@@ -655,7 +651,7 @@ void setup() {
    digitalWrite(LCD_BACKLIGHT_PIN,HIGH);
    pinMode(WIND_SENS_PIN, INPUT);
 
-   mySerial.begin(9600);
+   mySerial.begin(57600);
 }
 
 /*--------------------------------------------------------------------------------------
