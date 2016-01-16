@@ -149,6 +149,7 @@ int menu_state;   // the current state of the menu to be displayed
 //--BT Communication
 
 unsigned long oldBTtime = 0; // to check for the 3 seconds timeslot to send BT data
+byte sendCmd = 1;   // to send out one value at a time
 
 /*--------------------------------------------------------------------------------------
   Functions
@@ -563,17 +564,16 @@ void clearLCD()      // Clear the LCD
 
 void BTcomm()   // for BT communication
 {
- byte cmd = 0;       // store received data
- byte param;         //will be used later
+ byte cmd = 0;       // store received data           
  int flag = 0;        // make sure that you return the state only once
- unsigned long BTsendTime = 100 ; 
+ unsigned long BTsendTime = 1000 ; 
  
  if(mySerial.available() > 0)  //if some data is sent, read it and save it in the state variable
  {
   cmd = mySerial.read();
   flag=0;
  }
- 
+ /*
  if (cmd == 'v')  // if the command is "v" then send all values
  {
   mySerial.print("Windspeed:");
@@ -592,10 +592,9 @@ void BTcomm()   // for BT communication
   mySerial.println(max_humidity);   
   mySerial.print("Minimum Humidity:");
   mySerial.println(min_humidity);
- }
- else if (cmd == 'e')  // if the command is "e" then erase all values
+ }*/
+ if (cmd == 'e')  // if the command is "e" then erase all values
  {
-   mySerial.println("All Values Deleted...");
    max_temp =0;
    min_temp =100;
    max_humidity = 0;
@@ -603,35 +602,52 @@ void BTcomm()   // for BT communication
    max_wind_value =0;
  }
 
- /*
-  if((millis() - oldBTtime) > BTsendTime)  // Send out values every 3 seconds
+  if((millis() - oldBTtime) > BTsendTime)  // Send out values every 1 second
   {
-   mySerial.print("Windspeed:");
-   mySerial.println(windSpeed);
-   
-   mySerial.print("Maximum Windspeed:");
-   mySerial.println(max_wind_value);
+   if(sendCmd == 1)
+   {
+    mySerial.write(1);
+    mySerial.println(windSpeed);
+    sendCmd = 2;
+    delay(500);
+   }
+   else if(sendCmd == 2)
+   {
+    mySerial.write(2);
+    mySerial.println(max_wind_value);
+    sendCmd = 3;
+    delay(500);
+   }
+   else if(sendCmd == 3)
+   {
+    mySerial.write(3);
+    mySerial.println(temp_value);
+    sendCmd = 1;
+    delay(500);
+   }    
+/*
 
-   mySerial.print("Temperature:");
-   mySerial.println(temp_value);
-
-   mySerial.print("Maximum Temparature:");
+   mySerial.write(4);
    mySerial.println(max_temp);   
 
-   mySerial.print("Minimum Temparature:");
+
+   mySerial.write(5);
    mySerial.println(min_temp); 
 
-   mySerial.print("Humidity:");
+
+   mySerial.write(6);
    mySerial.println(humidity_value);
 
-   mySerial.print("Maximum Humidity:");
+
+   mySerial.write(7);
    mySerial.println(max_humidity);   
 
-   mySerial.print("Minimum Humidity:");
+
+   mySerial.write(8);
    mySerial.println(min_humidity); 
-   
+   */
    oldBTtime = millis();
-  }*/
+  }
  
 }
 /*--------------------------------------------------------------------------------------
