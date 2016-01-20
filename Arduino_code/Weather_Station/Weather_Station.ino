@@ -573,26 +573,6 @@ void BTcomm()   // for BT communication
   cmd = mySerial.read();
   flag=0;
  }
- /*
- if (cmd == 'v')  // if the command is "v" then send all values
- {
-  mySerial.print("Windspeed:");
-  mySerial.println(windSpeed);
-  mySerial.print("Maximum Windspeed:");
-  mySerial.println(max_wind_value);
-  mySerial.print("Temperature:");
-  mySerial.println(temp_value);
-  mySerial.print("Maximum Temparature:");
-  mySerial.println(max_temp);   
-  mySerial.print("Minimum Temparature:");
-  mySerial.println(min_temp); 
-  mySerial.print("Humidity:");
-  mySerial.println(humidity_value);
-  mySerial.print("Maximum Humidity:");
-  mySerial.println(max_humidity);   
-  mySerial.print("Minimum Humidity:");
-  mySerial.println(min_humidity);
- }*/
  if (cmd == 'e')  // if the command is "e" then erase all values
  {
    max_temp =0;
@@ -602,50 +582,64 @@ void BTcomm()   // for BT communication
    max_wind_value =0;
  }
 
-  if((millis() - oldBTtime) > BTsendTime)  // Send out values every 1 second
+  if((millis() - oldBTtime) > BTsendTime)  // Send out one value after the other every 1 second
   {
    if(sendCmd == 1)
    {
     mySerial.write(1);
     mySerial.println(windSpeed);
     sendCmd = 2;
-    delay(500);
+    delay(100);
    }
    else if(sendCmd == 2)
    {
     mySerial.write(2);
     mySerial.println(max_wind_value);
     sendCmd = 3;
-    delay(500);
+    delay(100);
    }
    else if(sendCmd == 3)
    {
     mySerial.write(3);
     mySerial.println(temp_value);
+    sendCmd = 4;
+    delay(100);
+   } 
+   else if(sendCmd == 4)
+   {
+    mySerial.write(4);
+    mySerial.println(max_temp); 
+    sendCmd = 5;
+    delay(100);
+   } 
+   else if(sendCmd == 5)
+   {
+    mySerial.write(5);
+    mySerial.println(min_temp); 
+    sendCmd = 6;
+    delay(100);
+   }  
+   else if(sendCmd == 6)
+   {
+    mySerial.write(6);
+    mySerial.println(humidity_value);
+    sendCmd = 7;
+    delay(100);
+   }
+   else if(sendCmd == 7)
+   {
+    mySerial.write(7);
+    mySerial.println(max_humidity);  
+    sendCmd = 8;
+    delay(100);
+   }
+   else if(sendCmd == 8)
+   {
+    mySerial.write(8);
+    mySerial.println(min_humidity); 
     sendCmd = 1;
-    delay(500);
-   }    
-/*
-
-   mySerial.write(4);
-   mySerial.println(max_temp);   
-
-
-   mySerial.write(5);
-   mySerial.println(min_temp); 
-
-
-   mySerial.write(6);
-   mySerial.println(humidity_value);
-
-
-   mySerial.write(7);
-   mySerial.println(max_humidity);   
-
-
-   mySerial.write(8);
-   mySerial.println(min_humidity); 
-   */
+    delay(100);
+   }
    oldBTtime = millis();
   }
  
@@ -667,7 +661,7 @@ void setup() {
    digitalWrite(LCD_BACKLIGHT_PIN,HIGH);
    pinMode(WIND_SENS_PIN, INPUT);
 
-   mySerial.begin(57600);
+   mySerial.begin(115200);
 }
 
 /*--------------------------------------------------------------------------------------
