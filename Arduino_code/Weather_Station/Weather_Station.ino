@@ -566,7 +566,7 @@ void BTcomm()   // for BT communication
 {
  byte cmd = 0;       // store received data           
  int flag = 0;        // make sure that you return the state only once
- unsigned long BTsendTime = 1000 ; 
+ unsigned long BTsendTime = 500 ; 
  
  if(mySerial.available() > 0)  //if some data is sent, read it and save it in the state variable
  {
@@ -582,7 +582,7 @@ void BTcomm()   // for BT communication
    max_wind_value =0;
  }
 
-  if((millis() - oldBTtime) > BTsendTime)  // Send out one value after the other every 1 second
+  if((millis() - oldBTtime) > BTsendTime)  // Send out one value after the other every 0.5 second
   {
    if(sendCmd == 1)
    {
